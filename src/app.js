@@ -1,15 +1,15 @@
 const express = require('express')
-const db = require('./database/db')
+const db = require('./config/database')
 
 const app = express()
 
 
 const cors = require('cors')
-const port = 3000
+const port = 9000
 
 // // 配置CORS中间件
 // app.use(cors({
-//   origin: '*', // 允许所有来源，生产环境应指定具体域名
+//   allowedOrigin: 'http://localhost:9000', // 允许所有来源，生产环境应指定具体域名
 //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 //   allowedHeaders: ['Content-Type', 'Authorization'],
 //   credentials: true // 如果需要发送cookie等凭证
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
   // 处理预检请求 (Preflight Request)
   if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+    return res.sendStatus(200).end();
   }
 
   next();
@@ -36,7 +36,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/errors/upload', (req, res) => {
-  res.send(req.body)
+  console.log('=========res upload', req)
+
+  res.json({
+    message: 'POST请求成功',
+    data: req.body
+  });
 });
 
 app.get('/test', (req, res) => {
